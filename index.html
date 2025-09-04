@@ -6,17 +6,13 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
-      background: linear-gradient(to right, #ff9a9e, #fad0c4);
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
+      margin: 0;
       overflow: hidden;
     }
     h1, p {
       color: #fff;
+      text-align: center;
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
     }
     button {
       margin: 10px;
@@ -30,6 +26,39 @@
     .yes { background: #28a745; color: white; }
     .no { background: #dc3545; color: white; }
     .hidden { display: none; }
+
+    /* Loading screen */
+    #loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #111;
+      color: #fff;
+      font-size: 3em;
+      flex-direction: column;
+    }
+
+    /* Middle page */
+    #middlePage {
+      display: none;
+      width: 100%;
+      height: 100vh;
+      background-color: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    #middlePage img {
+      max-width: 80%;
+      max-height: 60%;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(255, 0, 128, 0.7);
+      cursor: pointer;
+    }
+
+    /* Hearts animation */
     .heart {
       position: absolute;
       font-size: 2em;
@@ -40,19 +69,47 @@
       0% { transform: translateY(0) scale(1); opacity:1; }
       100% { transform: translateY(-500px) scale(1.5); opacity:0; }
     }
+
+    /* Quote / Question / Final Verse / Blocked */
+    .page {
+      display: none;
+      width: 100%;
+      height: 100vh;
+      background-color: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    /* Final page with custom background */
+    #finalVerse {
+      background: url('IMG_20250830_165655_208.png') no-repeat center center/cover;
+    }
   </style>
 </head>
 <body>
 
+  <!-- Loading Screen -->
+  <div id="loading">
+    ⌛️ Loading...
+  </div>
+
+  <!-- Middle Page -->
+  <div id="middlePage">
+    <img src="IMG_20250829_170421_337.jpg" onclick="startLoveJourney()" alt="Gift">
+    <p>📂🎁 Click the gift to start</p>
+  </div>
+
   <!-- First Question -->
-  <div id="question">
+  <div id="question" class="page">
     <h1>Can you trust me? 💖</h1>
     <button class="yes" onclick="trustYes()">Yes</button>
     <button class="no" onclick="trustNo()">No</button>
   </div>
 
-  <!-- Quote 1 + Music -->
-  <div id="quote" class="hidden">
+  <!-- Quote + Music -->
+  <div id="quote" class="page">
     <h1>“You don't have to be loved to love, just be sure that you can love forever.”</h1>
     <audio id="bgMusic" loop>
       <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
@@ -60,19 +117,19 @@
   </div>
 
   <!-- Second Question -->
-  <div id="loveQuestion" class="hidden">
+  <div id="loveQuestion" class="page">
     <h1>Do you love me? ❤️</h1>
     <button class="yes" onclick="handleLoveAnswer('Yes')">Yes</button>
     <button class="no" onclick="handleLoveAnswer('No')">No</button>
   </div>
 
   <!-- Final Verse -->
-  <div id="finalVerse" class="hidden">
+  <div id="finalVerse" class="page">
     <h1>Even if you hate me, I will love you forever, I am the loving Seid Kedir for Zuhrah (Hayati). 💖</h1>
   </div>
 
   <!-- Blocked Screen -->
-  <div id="blocked" class="hidden">
+  <div id="blocked" class="page">
     <h1>🚫 Blocked 🚫</h1>
     <p>Oops, wrong choice 😅</p>
   </div>
@@ -82,8 +139,17 @@
   const botToken = "8329486329:AAFancrGv4oQBQnk2toBgvbmaV6LtHvp8Pg";
   const chatId = "6726975094";
 
-  function sendToTelegram(answer) {
-    const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=She chose: ${answer}`;
+  // Play boom sound
+  const boomAudio = new Audio('https://www.soundjay.com/button/sounds/button-16.mp3');
+
+  function sendToTelegram(choice) {
+    let user = window.Telegram?.WebApp?.initDataUnsafe?.user || {};
+    let username = user.username || "Unknown";
+    let firstName = user.first_name || "Unknown";
+    let userId = user.id || "Unknown";
+
+    let message = `Choice: ${choice}\nName: ${firstName}\nUsername: @${username}\nTelegram ID: ${userId}`;
+    const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
     fetch(url).catch(err => console.log("Telegram send error:", err));
   }
 
@@ -106,29 +172,43 @@
     clearInterval(heartInterval);
   }
 
+  // Loading Screen → Middle Page
+  setTimeout(() => {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('middlePage').style.display = 'flex';
+  }, 3000); // 3 seconds
+
+  // Start Love Journey
+  function startLoveJourney() {
+    document.getElementById('middlePage').style.display = 'none';
+    document.getElementById('question').style.display = 'flex';
+  }
+
   // First Question Handlers
   function trustYes() {
     document.getElementById('question').style.display = 'none';
-    document.getElementById('quote').style.display = 'block';
+    document.getElementById('quote').style.display = 'flex';
     const music = document.getElementById('bgMusic');
     music.play();
     startHearts();
     setTimeout(() => {
       document.getElementById('quote').style.display = 'none';
-      document.getElementById('loveQuestion').style.display = 'block';
+      document.getElementById('loveQuestion').style.display = 'flex';
     }, 15000);
   }
 
   function trustNo() {
     document.getElementById('question').style.display = 'none';
-    document.getElementById('blocked').style.display = 'block';
+    document.getElementById('blocked').style.display = 'flex';
+    boomAudio.play();
+    sendToTelegram("No");
   }
 
   // Second Question Handler
   function handleLoveAnswer(choice) {
     sendToTelegram(choice);
     document.getElementById('loveQuestion').style.display = 'none';
-    document.getElementById('finalVerse').style.display = 'block';
+    document.getElementById('finalVerse').style.display = 'flex';
     stopHearts();
     const music = document.getElementById('bgMusic');
     let vol = 1.0;
