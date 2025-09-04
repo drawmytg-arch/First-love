@@ -1,228 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Love Surprise ❤️</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      overflow: hidden;
-    }
-    h1, p {
-      color: #fff;
-      text-align: center;
-      text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
-    }
-    button {
-      margin: 10px;
-      padding: 15px 25px;
-      font-size: 18px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .yes { background: #28a745; color: white; }
-    .no { background: #dc3545; color: white; }
-    .hidden { display: none; }
+<meta charset="UTF-8">
+<title>Love Surprise ❤️</title>
+<style>
+  body { margin: 0; font-family: Arial, sans-serif; overflow: hidden; background-color: #111; }
+  h1, p { color: #fff; text-align: center; text-shadow: 2px 2px 10px rgba(0,0,0,0.7); }
+  button { margin: 10px; padding: 15px 25px; font-size: 18px; border: none; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+  .yes { background: #28a745; color: white; }
+  .no { background: #dc3545; color: white; }
+  .hidden { display: none; }
+  .page { display: none; width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; }
 
-    /* Loading screen */
-    #loading {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #111;
-      color: #fff;
-      font-size: 3em;
-      flex-direction: column;
-    }
+  /* Loading Screen */
+  #loading { display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; }
+  #loading img { width: 150px; border-radius: 15px; }
 
-    /* Middle page */
-    #middlePage {
-      display: none;
-      width: 100%;
-      height: 100vh;
-      background-color: #111;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-    #middlePage img {
-      max-width: 80%;
-      max-height: 60%;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(255, 0, 128, 0.7);
-      cursor: pointer;
-    }
+  /* Middle Page */
+  #middlePage img { max-width: 80%; max-height: 60%; border-radius: 15px; box-shadow: 0 0 20px rgba(255,0,128,0.7); cursor: pointer; }
 
-    /* Hearts animation */
-    .heart {
-      position: absolute;
-      font-size: 2em;
-      animation: floatUp 4s linear forwards;
-      color: #ff2d95;
-    }
-    @keyframes floatUp {
-      0% { transform: translateY(0) scale(1); opacity:1; }
-      100% { transform: translateY(-500px) scale(1.5); opacity:0; }
-    }
+  /* Hearts animation */
+  .heart { position: absolute; font-size: 2em; animation: floatUp 4s linear forwards; }
+  @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity:1; } 100% { transform: translateY(-500px) scale(1.5); opacity:0; } }
 
-    /* Quote / Question / Final Verse / Blocked */
-    .page {
-      display: none;
-      width: 100%;
-      height: 100vh;
-      background-color: #111;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-
-    /* Final page with custom background */
-    #finalVerse {
-      background: url('IMG_20250830_165655_208.png') no-repeat center center/cover;
-    }
-  </style>
+  /* Final page background */
+  #finalVerse { background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTI3NDB8MHwxfGFsbHwxfHxsb3ZlJTIwcm9tYW50aWM&ixlib=rb-4.0.3&q=80&w=1080') no-repeat center center/cover; }
+</style>
 </head>
 <body>
 
-  <!-- Loading Screen -->
-  <div id="loading">
-    ⌛️ Loading...
-  </div>
+<!-- Loading Screen -->
+<div id="loading">
+  <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" alt="Loading...">
+  <p>⌛️ Loading...</p>
+</div>
 
-  <!-- Middle Page -->
-  <div id="middlePage">
-    <img src="IMG_20250829_170421_337.jpg" onclick="startLoveJourney()" alt="Gift">
-    <p>📂🎁 Click the gift to start</p>
-  </div>
+<!-- Middle Page -->
+<div id="middlePage" class="page">
+  <img src="https://images.unsplash.com/photo-1518976024611-4888c0c4d1bb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" alt="Gift" onclick="startLoveJourney()">
+  <p>📂🎁 Click the gift to start</p>
+</div>
 
-  <!-- First Question -->
-  <div id="question" class="page">
-    <h1>Can you trust me? 💖</h1>
-    <button class="yes" onclick="trustYes()">Yes</button>
-    <button class="no" onclick="trustNo()">No</button>
-  </div>
+<!-- First Question -->
+<div id="question" class="page">
+  <h1>Can you trust me? 💖</h1>
+  <button class="yes" onclick="trustYes()">Yes</button>
+  <button class="no" onclick="trustNo()">No</button>
+</div>
 
-  <!-- Quote + Music -->
-  <div id="quote" class="page">
-    <h1>“You don't have to be loved to love, just be sure that you can love forever.”</h1>
-    <audio id="bgMusic" loop>
-      <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
-    </audio>
-  </div>
+<!-- Quote + Music -->
+<div id="quote" class="page">
+  <h1>“You don't have to be loved to love, just be sure that you can love forever.”</h1>
+  <audio id="bgMusic" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+  </audio>
+</div>
 
-  <!-- Second Question -->
-  <div id="loveQuestion" class="page">
-    <h1>Do you love me? ❤️</h1>
-    <button class="yes" onclick="handleLoveAnswer('Yes')">Yes</button>
-    <button class="no" onclick="handleLoveAnswer('No')">No</button>
-  </div>
+<!-- Second Question -->
+<div id="loveQuestion" class="page">
+  <h1>Do you love me? ❤️</h1>
+  <button class="yes" onclick="handleLoveAnswer('Yes')">Yes</button>
+  <button class="no" onclick="handleLoveAnswer('No')">No</button>
+</div>
 
-  <!-- Final Verse -->
-  <div id="finalVerse" class="page">
-    <h1>Even if you hate me, I will love you forever, I am the loving Seid Kedir for Zuhrah (Hayati). 💖</h1>
-  </div>
+<!-- Final Verse -->
+<div id="finalVerse" class="page">
+  <h1>Even if you hate me, I will love you forever, I am the loving Seid Kedir for Zuhrah (Hayati). 💖</h1>
+</div>
 
-  <!-- Blocked Screen -->
-  <div id="blocked" class="page">
-    <h1>🚫 Blocked 🚫</h1>
-    <p>Oops, wrong choice 😅</p>
-  </div>
+<!-- Blocked Screen -->
+<div id="blocked" class="page">
+  <h1>🚫 Blocked 🚫</h1>
+  <p>Oops, wrong choice 😅</p>
+</div>
 
 <script>
-  // Telegram Info
-  const botToken = "8329486329:AAFancrGv4oQBQnk2toBgvbmaV6LtHvp8Pg";
-  const chatId = "6726975094";
+const botToken = "8329486329:AAFancrGv4oQBQnk2toBgvbmaV6LtHvp8Pg";
+const chatId = "6726975094";
+const boomAudio = new Audio('https://www.soundjay.com/button/sounds/button-16.mp3');
 
-  // Play boom sound
-  const boomAudio = new Audio('https://www.soundjay.com/button/sounds/button-16.mp3');
+function sendToTelegram(choice){
+  let user = window.Telegram?.WebApp?.initDataUnsafe?.user || {};
+  let username = user.username || "Unknown";
+  let firstName = user.first_name || "Unknown";
+  let userId = user.id || "Unknown";
+  let message = `Choice: ${choice}\nName: ${firstName}\nUsername: @${username}\nTelegram ID: ${userId}`;
+  fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`)
+  .catch(err=>console.log("Telegram send error:",err));
+}
 
-  function sendToTelegram(choice) {
-    let user = window.Telegram?.WebApp?.initDataUnsafe?.user || {};
-    let username = user.username || "Unknown";
-    let firstName = user.first_name || "Unknown";
-    let userId = user.id || "Unknown";
+// Hearts
+let heartInterval;
+function createHeart(){
+  const heart = document.createElement('div');
+  heart.classList.add('heart');
+  heart.style.color = `hsl(${Math.random()*360},80%,70%)`;
+  heart.style.left = Math.random()*window.innerWidth + 'px';
+  heart.style.fontSize = (Math.random()*30+20)+'px';
+  heart.innerText = '❤️';
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),4000);
+}
+function startHearts(){ heartInterval = setInterval(createHeart,400); }
+function stopHearts(){ clearInterval(heartInterval); }
 
-    let message = `Choice: ${choice}\nName: ${firstName}\nUsername: @${username}\nTelegram ID: ${userId}`;
-    const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
-    fetch(url).catch(err => console.log("Telegram send error:", err));
-  }
+// Loading → Middle
+setTimeout(()=>{
+  document.getElementById('loading').style.display='none';
+  document.getElementById('middlePage').style.display='flex';
+},3000);
 
-  // Hearts animation
-  let heartInterval;
-  function createHeart() {
-    const heart = document.createElement('div');
-    heart.classList.add('heart');
-    heart.innerText = '❤️';
-    heart.style.left = Math.random() * window.innerWidth + 'px';
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 4000);
-  }
+// Start Journey
+function startLoveJourney(){
+  document.getElementById('middlePage').style.display='none';
+  document.getElementById('question').style.display='flex';
+}
 
-  function startHearts() {
-    heartInterval = setInterval(createHeart, 500);
-  }
+// First Question
+function trustYes(){
+  document.getElementById('question').style.display='none';
+  document.getElementById('quote').style.display='flex';
+  const music = document.getElementById('bgMusic');
+  music.play();
+  startHearts();
+  setTimeout(()=>{
+    document.getElementById('quote').style.display='none';
+    document.getElementById('loveQuestion').style.display='flex';
+  },15000);
+}
 
-  function stopHearts() {
-    clearInterval(heartInterval);
-  }
+function trustNo(){
+  document.getElementById('question').style.display='none';
+  document.getElementById('blocked').style.display='flex';
+  boomAudio.play();
+  sendToTelegram("No");
+}
 
-  // Loading Screen → Middle Page
-  setTimeout(() => {
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('middlePage').style.display = 'flex';
-  }, 3000); // 3 seconds
-
-  // Start Love Journey
-  function startLoveJourney() {
-    document.getElementById('middlePage').style.display = 'none';
-    document.getElementById('question').style.display = 'flex';
-  }
-
-  // First Question Handlers
-  function trustYes() {
-    document.getElementById('question').style.display = 'none';
-    document.getElementById('quote').style.display = 'flex';
-    const music = document.getElementById('bgMusic');
-    music.play();
-    startHearts();
-    setTimeout(() => {
-      document.getElementById('quote').style.display = 'none';
-      document.getElementById('loveQuestion').style.display = 'flex';
-    }, 15000);
-  }
-
-  function trustNo() {
-    document.getElementById('question').style.display = 'none';
-    document.getElementById('blocked').style.display = 'flex';
-    boomAudio.play();
-    sendToTelegram("No");
-  }
-
-  // Second Question Handler
-  function handleLoveAnswer(choice) {
-    sendToTelegram(choice);
-    document.getElementById('loveQuestion').style.display = 'none';
-    document.getElementById('finalVerse').style.display = 'flex';
-    stopHearts();
-    const music = document.getElementById('bgMusic');
-    let vol = 1.0;
-    const fade = setInterval(() => {
-      if(vol > 0.05){
-        vol -= 0.05;
-        music.volume = vol;
-      } else {
-        music.pause();
-        clearInterval(fade);
-      }
-    }, 200);
-  }
+// Second Question
+function handleLoveAnswer(choice){
+  sendToTelegram(choice);
+  document.getElementById('loveQuestion').style.display='none';
+  document.getElementById('finalVerse').style.display='flex';
+  stopHearts();
+  const music=document.getElementById('bgMusic');
+  let vol=1.0;
+  const fade=setInterval(()=>{
+    if(vol>0.05){ vol-=0.05; music.volume=vol; }
+    else{ music.pause(); clearInterval(fade); }
+  },200);
+}
 </script>
-
 </body>
 </html>
