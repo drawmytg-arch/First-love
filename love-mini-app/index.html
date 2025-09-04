@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Love Surprise ❤️</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(to right, #ff9a9e, #fad0c4);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    h1, p {
+      color: #fff;
+    }
+    button {
+      margin: 10px;
+      padding: 15px 25px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .yes { background: #28a745; color: white; }
+    .no { background: #dc3545; color: white; }
+    .hidden { display: none; }
+    .heart {
+      position: absolute;
+      font-size: 2em;
+      animation: floatUp 4s linear forwards;
+      color: #ff2d95;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity:1; }
+      100% { transform: translateY(-500px) scale(1.5); opacity:0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- First Question -->
+  <div id="question">
+    <h1>Can you trust me? 💖</h1>
+    <button class="yes" onclick="trustYes()">Yes</button>
+    <button class="no" onclick="trustNo()">No</button>
+  </div>
+
+  <!-- Quote 1 + Music -->
+  <div id="quote" class="hidden">
+    <h1>“You don't have to be loved to love, just be sure that you can love forever.”</h1>
+    <audio id="bgMusic" loop>
+      <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <!-- Second Question -->
+  <div id="loveQuestion" class="hidden">
+    <h1>Do you love me? ❤️</h1>
+    <button class="yes" onclick="handleLoveAnswer('Yes')">Yes</button>
+    <button class="no" onclick="handleLoveAnswer('No')">No</button>
+  </div>
+
+  <!-- Final Verse -->
+  <div id="finalVerse" class="hidden">
+    <h1>Even if you hate me, I will love you forever, I am the loving Seid Kedir for Zuhrah (Hayati). 💖</h1>
+  </div>
+
+  <!-- Blocked Screen -->
+  <div id="blocked" class="hidden">
+    <h1>🚫 Blocked 🚫</h1>
+    <p>Oops, wrong choice 😅</p>
+  </div>
+
+<script>
+  // Telegram Info
+  const botToken = "8329486329:AAFancrGv4oQBQnk2toBgvbmaV6LtHvp8Pg";
+  const chatId = "6726975094";
+
+  function sendToTelegram(answer) {
+    const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=She chose: ${answer}`;
+    fetch(url).catch(err => console.log("Telegram send error:", err));
+  }
+
+  // Hearts animation
+  let heartInterval;
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.innerText = '❤️';
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 4000);
+  }
+
+  function startHearts() {
+    heartInterval = setInterval(createHeart, 500);
+  }
+
+  function stopHearts() {
+    clearInterval(heartInterval);
+  }
+
+  // First Question Handlers
+  function trustYes() {
+    document.getElementById('question').style.display = 'none';
+    document.getElementById('quote').style.display = 'block';
+    const music = document.getElementById('bgMusic');
+    music.play();
+    startHearts();
+    setTimeout(() => {
+      document.getElementById('quote').style.display = 'none';
+      document.getElementById('loveQuestion').style.display = 'block';
+    }, 15000);
+  }
+
+  function trustNo() {
+    document.getElementById('question').style.display = 'none';
+    document.getElementById('blocked').style.display = 'block';
+  }
+
+  // Second Question Handler
+  function handleLoveAnswer(choice) {
+    sendToTelegram(choice);
+    document.getElementById('loveQuestion').style.display = 'none';
+    document.getElementById('finalVerse').style.display = 'block';
+    stopHearts();
+    const music = document.getElementById('bgMusic');
+    let vol = 1.0;
+    const fade = setInterval(() => {
+      if(vol > 0.05){
+        vol -= 0.05;
+        music.volume = vol;
+      } else {
+        music.pause();
+        clearInterval(fade);
+      }
+    }, 200);
+  }
+</script>
+
+</body>
+</html>
